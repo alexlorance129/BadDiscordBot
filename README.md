@@ -2,6 +2,8 @@
 
 This is a useless bot made by `morris#0832`. If you need support, visit [the suppport server](https://discord.gg/9hRanxP3z7). 
 
+Invite me: [here](https://discord.com/api/oauth2/authorize?client_id=979252382137458688&permissions=8&scope=bot)
+
 ## Usage
 
 Run `?!help`.
