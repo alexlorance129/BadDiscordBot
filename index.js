@@ -1,12 +1,7 @@
 const {Client,Intents} = require('discord.js');
 const client = new Client({intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES]});
 const {token} = require("./config.json");
-const births = [
-  ["Pakhomav", 2009, 6, 2],
-  ["Morris", 2009, 2, 6],
-  ["Mein Freund A", 2010, 3, 4],
-  ["Mein Freund B", 2010, 3, 4]
-]
+const births = require("./births.js");
 require('dotenv').config();
 const fs = require('fs');
 const head_link = "https://www.cbc.gov.tw/public/data/issue/money/images/50-new_1.jpg";
@@ -99,7 +94,7 @@ client.on("message", msg => {
 
         var names = [];
         var ages = [];
-        console.log(births[0][1])
+        
         for(var i = 0; i < births.length; i++ ){
           if(month == births[i][2] && date == births [i][3]){
             /*names += String(births[i][0]);
@@ -112,20 +107,22 @@ client.on("message", msg => {
 
 
         
-        if (names != []) {
+        if (names.length >= 1) {
           if (names.length == 1){
             reply = "Happy birthday " + names + "! You're now " + ages + " years old!!!"
           } else {
             var reply = "";
             for(var i = 0; i < names.length; i++){
-              console.log(names)
-              console.log(i + "is" + names[i])
+              
               reply += "Happy birthday " + names[i] + "! You're now " + ages[i] + " years old!!!\n"
               
               
             }
           }
-          msg.reply(reply); 
+
+          if (reply != ""){
+            msg.reply(reply);
+          } 
         } else {
             msg.reply("What are you doing here? Today is not anyone's birthday!!!\n\n\n(at least, that's what my database says. If your birthday is not listed, consider contacting the author. Also, please scold the author a bit for not putting the report function in the bot.");
         }
