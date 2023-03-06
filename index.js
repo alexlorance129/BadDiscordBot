@@ -37,7 +37,7 @@ client.on("message", msg => {
     var command = commands[0];
 
     if (command === "?!ping") {
-        msg.channel.send(`Pong! \nLatency is ${msg.createdTimestamp - msg.createdTimestamp}ms, and API Latency is ${Math.round(client.ws.ping)}ms!`);
+        msg.channel.send(`Pong! \nLatency is ${Date.now() - msg.createdTimestamp}ms, and API Latency is ${Math.round(client.ws.ping)}ms!`);
   
 
     } else if (command === "?!error") {
