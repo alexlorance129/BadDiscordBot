@@ -12,15 +12,7 @@ let heartpoem = "觀自在菩薩。行深般若波羅蜜多時。照見五蘊皆
 let unhelp = "Do you think I will actually be this NICE to you by adding a help message? Of course not, I am the most evil being known to humankind. (Please laugh now) Figure out how to use me BY YOURSELF!!!";
 let help = "`?!help` => display this message.\n`?!count` => count. provide start number and end number.\n`?!ping` => ping the bot.\n`?!error` => throw an error. Limited to the bot's author. \n`?!greatcompassionmantra` => print 大悲咒\n`?!heartsutra` => print 般若波羅蜜多\n`?!flip` => flip a virtual coin. provide a side of your choosing and how much you'd like to bet. \n`?!birth` => say happy birthday to anyone in my database. you may contact the author to add your birthday in.\n`?!spam` => send spam. provide the message and number of messages. people other than the author is limited to sending 20 messages.";
 
-/*
-const express = require('express');
-const app = express();
-const port = 8889;
 
-app.get('/', (req, res) => res.send('Hello World!'));
-
-app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`));
-*/
 function getRndInteger(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
@@ -37,8 +29,7 @@ client.on("message", msg => {
     var command = commands[0];
 
     if (command === "?!ping") {
-        msg.channel.send(`Pong! \nLatency is ${Date.now() - msg.createdTimestamp}ms, and API Latency is ${Math.round(client.ws.ping)}ms!`);
-  
+        msg.reply("pong");
 
     } else if (command === "?!error") {
         if (msg.author.id == '931727225017999441') {
@@ -67,19 +58,16 @@ client.on("message", msg => {
 
         if (start < end) {
             for (var i = start; i <= end; i++) {
-                //if(start < end){
+                
                 if (string.length + i.toString.length <= 1800) {
                     string += ('' + i + '\n');
-                    //console.log('i:' + i);
-                    //console.log(string + 'A');
                 } else {
-                    //console.log(string + 'B');
                     msg.channel.send(string);
                     string = "" + i + "\n";
                 }
 
 
-                //
+                
             }
         }
         if (string != "") {
@@ -98,8 +86,7 @@ client.on("message", msg => {
         
         for(var i = 0; i < births.length; i++ ){
           if(month == births[i][2] && date == births [i][3]){
-            /*names += String(births[i][0]);
-            ages +=  String(year - births[i][1]);*/
+            
 
             names.push(String(births[i][0]));
             ages.push(String(year - births[i][1]));
