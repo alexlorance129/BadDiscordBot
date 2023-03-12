@@ -73,7 +73,7 @@ client.on("message", msg => {
         if (string != "") {
             msg.channel.send(string);
         } else {
-            msg.reply("Input not expected");
+            msg.reply("Input not expected. Usage: `?!count (start integer) (end integer)`");
         }
     } else if (command === "?!birth") {
         let month = d.getMonth() + 1;
@@ -119,6 +119,7 @@ client.on("message", msg => {
 
         var face = commands[1];
         var bet = commands[2];
+        
         if ((face == 'h' || face == 't') && bet > 0 && bet % 2 == 0) {
             var result = getRndInteger(0, 1);
             if (result == 0) {
@@ -134,7 +135,7 @@ client.on("message", msg => {
                 msg.reply("You lost " + 0.5 * bet + " Yee$!!!");
             }
         } else {
-            msg.reply("Input not expected");
+            msg.reply("Input not expected. Usage: `?!flip (h/t) (amount you'd like to bet in YEE$)`");
         }
 
     } else if (command == "?!spam") {
