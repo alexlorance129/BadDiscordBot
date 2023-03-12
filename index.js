@@ -29,7 +29,7 @@ client.on("message", msg => {
     var command = commands[0];
 
     if (command === "?!ping") {
-        msg.reply("pong");
+        msg.channel.send(`Pong! \nLatency is ${Date.now() - msg.createdTimestamp}ms, and API Latency is ${Math.round(client.ws.ping)}ms!`);
 
     } else if (command === "?!error") {
         if (msg.author.id == '931727225017999441') {
