@@ -10,7 +10,7 @@ let greatSadnessPoem = "南無喝囉怛那哆囉夜耶。南無阿唎耶。婆�
 let heartpoem = "觀自在菩薩。行深般若波羅蜜多時。照見五蘊皆空。度一切苦厄。舍利子。色不異空。空不異色。色即是空。空即是色。受想行識。亦復如是。舍利子。是諸法空相。不生不滅。不垢不淨。不增不減。是故空中無色。無受想行識。無眼耳鼻舌身意。無色聲香味觸法。無眼界。乃至無意識界。無無明。亦無無明盡。乃至無老死。亦無老死盡。無苦集滅道。無智亦無得。以無所得故。菩提薩埵。依般若波羅蜜多故。心無罣礙。無罣礙故。無有恐怖。遠離顛倒夢想。究竟涅槃。三世諸佛。依般若波羅蜜多故。得阿耨多羅三藐三菩提。故知般若波羅蜜多。是大神咒。是大明咒。是無上咒。是無等等咒。能除一切苦。真實不虛。故說般若波羅蜜多咒。即說咒曰。揭諦揭諦　波羅揭諦　波羅僧揭諦　菩提薩婆訶";
 
 let unhelp = "Do you think I will actually be this NICE to you by adding a help message? Of course not, I am the most evil being known to humankind. (Please laugh now) Figure out how to use me BY YOURSELF!!!";
-let help = "`?!help` => display this message.\n`?!count` => count. provide start number and end number.\n`?!ping` => ping the bot.\n`?!error` => throw an error. Limited to the bot's author. \n`?!greatcompassionmantra` => print 大悲咒\n`?!heartsutra` => print 般若波羅蜜多\n`?!flip` => flip a virtual coin. provide a side of your choosing and how much you'd like to bet. \n`?!birth` => say happy birthday to anyone in my database. you may contact the author to add your birthday in.\n`?!spam` => send spam. provide the message and number of messages. people other than the author is limited to sending 20 messages.";
+let help = "`?!help` => display this message.\n`?!count` => count. provide start number and end number.\n`?!ping` => ping the bot.\n`?!error` => throw an error. Limited to the bot's author. \n`?!greatcompassionmantra` => print 大悲咒\n`?!heartsutra` => print 般若波羅蜜多\n`?!flip` => flip a virtual coin. provide a side of your choosing and how much you'd like to bet. If you dont choose a side, or if the bet is odd, the bot will only output a side of the coin. \n`?!birth` => say happy birthday to anyone in my database. you may contact the author to add your birthday in.\n`?!spam` => send spam. provide the message and number of messages. people other than the author is limited to sending 20 messages.";
 
 
 function getRndInteger(min, max) {
@@ -135,7 +135,14 @@ client.on("message", msg => {
                 msg.reply("You lost " + 0.5 * bet + " Yee$!!!");
             }
         } else {
-            msg.reply("Input not expected. Usage: `?!flip (h/t) (amount you'd like to bet in YEE$)`");
+            var result = getRndInteger(0, 1);
+            if (result == 0) {
+                result = 'h'
+                msg.reply(head_link);
+            } else {
+                result = 't'
+                msg.reply(tail_link);
+            }
         }
 
     } else if (command == "?!spam") {
