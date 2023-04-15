@@ -10,7 +10,8 @@ Run `?!help`.
 
 - `?!help` => display this message.
 - `?!count` => count. provide start number and end number.
-- `?!ping` => ping the bot.\n`?!error` => throw an error. Limited to the bot's author. 
+- `?!ping` => ping the bot.
+- `?!error` => throw an error. Limited to the bot's author. 
 - `?!greatcompassionmantra` => print 大悲咒
 - `?!heartsutra` => print 般若波羅蜜多
 - `?!flip` => flip a virtual coin. provide a side of your choosing and how much you'd like to bet. 
