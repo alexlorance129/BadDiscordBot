@@ -10,7 +10,9 @@ let greatSadnessPoem = "南無喝囉怛那哆囉夜耶。南無阿唎耶。婆�
 let heartpoem = "觀自在菩薩。行深般若波羅蜜多時。照見五蘊皆空。度一切苦厄。舍利子。色不異空。空不異色。色即是空。空即是色。受想行識。亦復如是。舍利子。是諸法空相。不生不滅。不垢不淨。不增不減。是故空中無色。無受想行識。無眼耳鼻舌身意。無色聲香味觸法。無眼界。乃至無意識界。無無明。亦無無明盡。乃至無老死。亦無老死盡。無苦集滅道。無智亦無得。以無所得故。菩提薩埵。依般若波羅蜜多故。心無罣礙。無罣礙故。無有恐怖。遠離顛倒夢想。究竟涅槃。三世諸佛。依般若波羅蜜多故。得阿耨多羅三藐三菩提。故知般若波羅蜜多。是大神咒。是大明咒。是無上咒。是無等等咒。能除一切苦。真實不虛。故說般若波羅蜜多咒。即說咒曰。揭諦揭諦　波羅揭諦　波羅僧揭諦　菩提薩婆訶";
 
 let unhelp = "Do you think I will actually be this NICE to you by adding a help message? Of course not, I am the most evil being known to humankind. (Please laugh now) Figure out how to use me BY YOURSELF!!!";
-let help = "`?!help` => display this message.\n`?!count` => count. provide start number and end number.\n`?!ping` => ping the bot.\n`?!error` => throw an error. Limited to the bot's author. \n`?!greatcompassionmantra` => print 大悲咒\n`?!heartsutra` => print 般若波羅蜜多\n`?!flip` => flip a virtual coin. provide a side of your choosing and how much you'd like to bet. If you don't choose a side, or if your bet is odd (remember, the smallest denomination of the YEE$ is 1YEE$), the bot will only give you a picture of a side of a coin. \n`?!birth` => say happy birthday to anyone in my database. you may contact the author to add your birthday in.\n`?!spam` => send spam. provide the message and number of messages. people other than the author is limited to sending 20 messages.";
+let help = "`?!help` => display this message.\n`?!count` => count. provide start number and end number.\n`?!ping` => ping the bot.\n`?!error` => throw an error. Limited to the bot's author. \n`?!greatcompassionmantra` => print 大悲咒\n`?!heartsutra` => print 般若波羅蜜多\n`?!flip` => flip a virtual coin. provide a side of your choosing and how much you'd like to bet. \n`?!birth` => say happy birthday to anyone in my database. \n`?!addbirth` => add your birthday! Usage: ```?!addbirth year(in AD) month(1~12) day(1~31)```\n`?!spam` => send spam. provide the message and number of messages. people other than the author is limited to sending 20 messages.\n";
+
+var testABC = require('./test.js');
 
 
 function getRndInteger(min, max) {
@@ -97,12 +99,12 @@ client.on("message", msg => {
         
         if (names.length >= 1) {
           if (names.length == 1){
-            reply = "Happy birthday " + names + "! You're now " + ages + " years old!!!"
+            reply = "Happy birthday <@" + names + "> ! You're now " + ages + " years old!!!"
           } else {
             var reply = "";
             for(var i = 0; i < names.length; i++){
               
-              reply += "Happy birthday " + names[i] + "! You're now " + ages[i] + " years old!!!\n"
+              reply += "Happy birthday <@" + names[i] + "> ! You're now " + ages[i] + " years old!!!\n"
               
               
             }
@@ -112,7 +114,7 @@ client.on("message", msg => {
             msg.reply(reply);
           } 
         } else {
-            msg.reply("What are you doing here? Today is not anyone's birthday!!!\n\n\n(at least, that's what my database says. If your birthday is not listed, consider contacting the author. Also, please scold the author a bit for not putting the report function in the bot.");
+            msg.reply("What are you doing here? Today is not anyone's birthday!!!\n\n\n(at least, that's what my database says. If your birthday is not listed, consider using `?!addbirth`. Usage: ```?!addbirth year(in AD) month(1~12) day(1~31)```Also, please do not scold the author a bit bc i already put it in ok?");
         }
 
     } else if (command === "?!flip") {
@@ -158,6 +160,54 @@ client.on("message", msg => {
         } else {
             msg.reply("<@" + msg.author.id + "> Permissions not sufficient. People other than the bot author is limited to sending 20 messages.")
         }
+    } else if (command == "?!modtest"){
+        
+        testABC.push("b");
+
+        console.log(testABC);
+        fs.writeFileSync('./test.js', "let test = " + JSON.stringify( testABC ) + ";\n\nmodule.exports =  test ;");
+        var testDEF = require('./test.js');
+        msg.reply("<@" + "931727225017999441" + "> ");
+    } else if (command == "?!addbirth"){
+        var useridisinlist = true;
+        var userID = msg.author.id;
+        for (var i = 0; i < births.length; i++){
+          if (userID != births[i][0]){
+            
+
+            if (i == births.length - 1){
+              
+              useridisinlist = false;
+              break;
+            }
+            if (i != births.length - 1){
+              
+            continue;} 
+          } else{
+            userisinlist = true;
+            break;
+          }
+          useridisinlist = true;
+        }
+        console.log(useridisinlist);
+        //births
+        if (useridisinlist == true){
+          msg.reply("you already entered your birthday");
+        } else {
+        var yearG = parseInt(commands[1]);
+        var monthG = parseInt(commands[2]);
+        var dayG = parseInt(commands[3]);
+      
+        births.push([userID, yearG, monthG, dayG]);
+
+        
+
+      
+        fs.writeFileSync('./births.js', "let births = " + JSON.stringify( births ) + ";\n\nmodule.exports =  births ;");
+        
+        msg.reply("Successfully added");
+        }
+      
     } else {
         /*
         if (command[0] != '&'){
