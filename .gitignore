@@ -5,6 +5,12 @@ exp.txt
 births.js
 old.txt
 test.js
+<<<<<<< HEAD
 
 exp.json
 optout.js
+=======
+replit.nix
+exp.json
+optout.js
+>>>>>>> 1f8b214 (added ?!optout and ?!listxp)
