@@ -19,4 +19,4 @@ Run `?!help`.
 - `?!addbirth` => add your birthday! Usage: ```?!addbirth year(in AD) month(1~12) day(1~31)```
 - `?!spam` => send spam. provide the message and number of messages. people other than the author is limited to sending 20 messages.
 - `?!optout` => Out-out of DMs. 
-- `listxp` => list your xp's, across servers.
+- `?!listxp` => list your xp's, across servers.
