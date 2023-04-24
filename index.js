@@ -10,10 +10,23 @@ let greatSadnessPoem = "南無喝囉怛那哆囉夜耶。南無阿唎耶。婆�
 let heartpoem = "觀自在菩薩。行深般若波羅蜜多時。照見五蘊皆空。度一切苦厄。舍利子。色不異空。空不異色。色即是空。空即是色。受想行識。亦復如是。舍利子。是諸法空相。不生不滅。不垢不淨。不增不減。是故空中無色。無受想行識。無眼耳鼻舌身意。無色聲香味觸法。無眼界。乃至無意識界。無無明。亦無無明盡。乃至無老死。亦無老死盡。無苦集滅道。無智亦無得。以無所得故。菩提薩埵。依般若波羅蜜多故。心無罣礙。無罣礙故。無有恐怖。遠離顛倒夢想。究竟涅槃。三世諸佛。依般若波羅蜜多故。得阿耨多羅三藐三菩提。故知般若波羅蜜多。是大神咒。是大明咒。是無上咒。是無等等咒。能除一切苦。真實不虛。故說般若波羅蜜多咒。即說咒曰。揭諦揭諦　波羅揭諦　波羅僧揭諦　菩提薩婆訶";
 
 let unhelp = "Do you think I will actually be this NICE to you by adding a help message? Of course not, I am the most evil being known to humankind. (Please laugh now) Figure out how to use me BY YOURSELF!!!";
-let help = "`?!help` => display this message.\n`?!count` => count. provide start number and end number.\n`?!ping` => ping the bot.\n`?!error` => throw an error. Limited to the bot's author. \n`?!greatcompassionmantra` => print 大悲咒\n`?!heartsutra` => print 般若波羅蜜多\n`?!flip` => flip a virtual coin. provide a side of your choosing and how much you'd like to bet. \n`?!birth` => say happy birthday to anyone in my database. \n`?!addbirth` => add your birthday! Usage: ```?!addbirth year(in AD) month(1~12) day(1~31)```\n`?!spam` => send spam. provide the message and number of messages. people other than the author is limited to sending 20 messages.\n";
+let help = "`?!help` => display this message.\n`?!count` => count. provide start number and end number.\n`?!ping` => ping the bot.\n`?!error` => throw an error. Limited to the bot's author. \n`?!greatcompassionmantra` => print 大悲咒\n`?!heartsutra` => print 般若波羅蜜多\n`?!flip` => flip a virtual coin. provide a side of your choosing and how much you'd like to bet. \n`?!birth` => say happy birthday to anyone in my database. \n`?!addbirth` => add your birthday! Usage: ```?!addbirth year(in AD) month(1~12) day(1~31)```\n`?!spam` => send spam. provide the message and number of messages. people other than the author is limited to sending 20 messages.\n`?!optout` => Out-out of DMs. \n`?!listxp` => list your xp's across servers. \n`?!safelistxp` => list your xp in this server.";
 
-var testABC = require('./test.js');
 
+let whitelist = ["1035160611077754910", "1033337146205012039", "978555497496076288"];
+
+var optout = require('./optout.js');
+
+let expData = {};
+try {
+  expData = require('./exp.json');
+} catch (error) {
+  console.error('Failed to load exp.json file:', error);
+}
+
+  const getLevel = (xp) => {
+    return Math.floor(xp / 150);
+  };
 
 function getRndInteger(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -208,6 +221,78 @@ client.on("message", msg => {
         msg.reply("Successfully added");
         }
       
+    } else if (command == "?!optout"){
+        const user = msg.author;
+        if (!optout.includes(user)){
+          fs.writeFileSync('./optout.js', "let test = [" + JSON.stringify( optout ) + "," + user + "];\n\nmodule.exports =  test ;");
+        
+          msg.reply("<@" + "931727225017999441" + "> Successfully opted out of DMs. ");
+        } else {
+          msg.reply("Already opted out")
+        }
+    } else if (command == "?!listxp") {
+      
+      if (!expData[msg.author.id]) {
+        msg.reply("You don't have any XP data.");
+        return;
+      }
+
+      const user = msg.author;
+      const guildXP = expData[msg.author.id];
+
+      let response = `XP and Level in each guild:\n`;
+      for (const guildId in guildXP) {
+        const guild = client.guilds.cache.get(guildId);
+        const guildName = guild.name;
+        const xp = guildXP[guildId];
+        const level = getLevel(xp);
+        
+        if (whitelist.includes(guildId) || msg.author.id == "931727225017999441"){
+          
+          response += `Guild: ${guildName}, XP: ${xp}, Level: ${level}\n`;
+        }
+      }
+
+      msg.reply(response);
+  
+
+      
+    } else if (command == "?!safelistxp") {
+      
+      if (!expData[msg.author.id]) {
+        msg.reply("You don't have any XP data.");
+        return;
+      }
+
+      const user = msg.author;
+      const guildXP = expData[msg.author.id];
+
+      let response = `XP and Level in this guild:\n`;
+      for (const guildId in guildXP) {
+        const guild = client.guilds.cache.get(guildId);
+        const guildName = guild.name;
+        const xp = guildXP[guildId];
+        const level = getLevel(xp);
+        
+        if ([msg.guild.id].includes(guildId) && whitelist.includes(guildId)){
+          
+          response += `Guild: ${guildName}, XP: ${xp}, Level: ${level}\n`;
+        }
+      }
+
+      msg.reply(response);
+  
+
+      
+    } else if (command == "?!delete"){
+      /*client.channels.fetch(1099586605578190918).then(channel => {
+        channel.messages.delete(1099627579687849985);
+      });*/
+
+
+
+      
+      //channel.messages.delete("1099627579687849985");
     } else {
         /*
         if (command[0] != '&'){
@@ -246,6 +331,58 @@ client.on("message", msg => {
         
         
         }  */
+
+
+
+
+  if (msg.author.bot || !msg.guild) {
+    return;
+  }
+
+  if (typeof expData[msg.author.id] != 'undefined'){
+    var oldLevel = getLevel(expData[msg.author.id][msg.guild.id] );
+  } else {
+    var oldlevel = 0;
+  }
+
+  if (typeof oldlevel == 'undefined'){
+    oldlevel = 0;
+  }
+  // Generate a random XP value between 3 and 5
+  const xp = Math.floor(Math.random() * 3) + 3;
+
+  // Add the user's ID, server's ID, and XP value to expData
+  if (!expData[msg.author.id]) {
+    expData[msg.author.id] = {};
+  }
+  if (!expData[msg.author.id][msg.guild.id]) {
+    expData[msg.author.id][msg.guild.id] = 0;
+  }
+  expData[msg.author.id][msg.guild.id] += xp;
+
+  // Check if level changed
+  
+  const newLevel = getLevel(expData[msg.author.id][msg.guild.id]);
+  if (newLevel > oldLevel) {
+    // Send a DM to the user with level change information
+    const user = msg.author;
+    const guildName = msg.guild.name;
+    const currentXP = expData[msg.author.id][msg.guild.id];
+    const level = newLevel;
+    console.log("ok comparison");
+    if (!optout.includes(user) && whitelist.includes(msg.guild.id)){
+      user.send(`Hello, ${user}!\nYou now have ${currentXP} XP in ${guildName}! You are now at Level ${level}! Opt-out of DMs by using ?!optout. `);
+      console.log("ok send");
+    }
+  }
+
+  // Save expData to exp.json file
+  fs.writeFile('./exp.json', JSON.stringify(expData, null, 2), (error) => {
+    if (error) {
+      console.error('Failed to save expData to exp.json file:', error);
+    }
+  });
+
     }
 });
 
