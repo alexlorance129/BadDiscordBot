@@ -226,7 +226,7 @@ client.on("message", msg => {
         if (!optout.includes(user)){
           fs.writeFileSync('./optout.js', "let test = [" + JSON.stringify( optout ) + "," + user + "];\n\nmodule.exports =  test ;");
         
-          msg.reply("<@" + "931727225017999441" + "> Successfully opted out of DMs. ");
+          msg.reply("<@" + msg.author.id + "> Successfully opted out of DMs. ");
         } else {
           msg.reply("Already opted out")
         }
