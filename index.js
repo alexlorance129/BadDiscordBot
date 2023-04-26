@@ -174,13 +174,15 @@ client.on("message", msg => {
             msg.reply("<@" + msg.author.id + "> Permissions not sufficient. People other than the bot author is limited to sending 20 messages.")
         }
     } else if (command == "?!modtest"){
-        
+        /*
         testABC.push("b");
 
         console.log(testABC);
         fs.writeFileSync('./test.js', "let test = " + JSON.stringify( testABC ) + ";\n\nmodule.exports =  test ;");
         var testDEF = require('./test.js');
-        msg.reply("<@" + "931727225017999441" + "> ");
+        msg.reply("<@" + "931727225017999441" + "> ");*/
+
+      
     } else if (command == "?!addbirth"){
         var useridisinlist = true;
         var userID = msg.author.id;
@@ -224,7 +226,12 @@ client.on("message", msg => {
     } else if (command == "?!optout"){
         const user = msg.author;
         if (!optout.includes(user)){
-          fs.writeFileSync('./optout.js', "let test = [" + JSON.stringify( optout ) + "," + user + "];\n\nmodule.exports =  test ;");
+          optout.push(user.id)
+          //console.log(test);
+          
+          let fileContent = `let test = ${JSON.stringify(optout)};\n\nmodule.exports = test;`;
+          fs.writeFileSync('./optout.js', fileContent);
+          //fs.writeFileSync('./optout.js', "let test = " + JSON.stringify( optout ) + "," + user + ";\n\nmodule.exports =  test ;");
         
           msg.reply("<@" + msg.author.id + "> Successfully opted out of DMs. ");
         } else {
@@ -351,6 +358,7 @@ client.on("message", msg => {
   // Generate a random XP value between 3 and 5
   const xp = Math.floor(Math.random() * 3) + 3;
 
+  console.log(expData[msg.author.id][msg.guild.id]);
   // Add the user's ID, server's ID, and XP value to expData
   if (!expData[msg.author.id]) {
     expData[msg.author.id] = {};
@@ -361,7 +369,7 @@ client.on("message", msg => {
   expData[msg.author.id][msg.guild.id] += xp;
 
   // Check if level changed
-  
+  console.log(expData[msg.author.id][msg.guild.id]);
   const newLevel = getLevel(expData[msg.author.id][msg.guild.id]);
   if (newLevel > oldLevel) {
     // Send a DM to the user with level change information
@@ -370,9 +378,12 @@ client.on("message", msg => {
     const currentXP = expData[msg.author.id][msg.guild.id];
     const level = newLevel;
     console.log("ok comparison");
-    if (!optout.includes(user) && whitelist.includes(msg.guild.id)){
+    /*console.log(!optout.includes(parseInt(user.id)) || !optout.includes(user.id));
+    console.log(user.id == 931727225017999500);
+    console.log(optout);*/
+    if ((!optout.includes(parseInt(user.id)) /* int */|| !optout.includes(user.id)/* string */) && whitelist.includes(msg.guild.id)/* in ok guild */){
       user.send(`Hello, ${user}!\nYou now have ${currentXP} XP in ${guildName}! You are now at Level ${level}! Opt-out of DMs by using ?!optout. `);
-      console.log("ok send");
+      console.log("ok send" + msg.author.tag);
     }
   }
 
