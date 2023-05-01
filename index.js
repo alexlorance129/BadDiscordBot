@@ -24,9 +24,9 @@ try {
   console.error('Failed to load exp.json file:', error);
 }
 
-  const getLevel = (xp) => {
-    return Math.floor(xp / 150);
-  };
+const getLevel = (xp) => {
+  return Math.floor(xp / 150);
+};
 
 function getRndInteger(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -342,7 +342,7 @@ client.on("message", msg => {
 
 
 
-  if (msg.author.bot || !msg.guild) {
+  if (msg.author.bot || !msg.guild || command[0] == '&') {
     return;
   }
 
@@ -377,13 +377,13 @@ client.on("message", msg => {
     const guildName = msg.guild.name;
     const currentXP = expData[msg.author.id][msg.guild.id];
     const level = newLevel;
-    console.log("ok comparison");
+    //console.log("ok comparison");
     /*console.log(!optout.includes(parseInt(user.id)) || !optout.includes(user.id));
     console.log(user.id == 931727225017999500);
     console.log(optout);*/
     if ((!optout.includes(parseInt(user.id)) /* int */|| !optout.includes(user.id)/* string */) && whitelist.includes(msg.guild.id)/* in ok guild */){
       user.send(`Hello, ${user}!\nYou now have ${currentXP} XP in ${guildName}! You are now at Level ${level}! Opt-out of DMs by using ?!optout. `);
-      console.log("ok send" + msg.author.tag);
+      console.log("ok send" + msg.author.tag + currentXP + "," + level);
     }
   }
 
