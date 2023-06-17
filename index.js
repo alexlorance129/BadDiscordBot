@@ -291,6 +291,15 @@ client.on("message", msg => {
   
 
       
+    } else if (command == "?!會考"){
+        const date1 = new Date();
+        const date2 = new Date('2024-05-20');
+        const diffTime = Math.abs(date2 - date1);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+        console.log(diffTime + " milliseconds");
+        console.log(diffDays + " days");
+        msg.reply("還有" + diffDays + " 天就會考了！");
+      
     } else if (command == "?!delete"){
       /*client.channels.fetch(1099586605578190918).then(channel => {
         channel.messages.delete(1099627579687849985);
