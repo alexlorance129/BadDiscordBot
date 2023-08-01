@@ -16,10 +16,6 @@ let help = "`?!help` => display this message.\n`?!count` => count. provide start
 let whitelist = ["1035160611077754910", "1033337146205012039", "978555497496076288"];
 
 var optout = require('./optout.js');
-console.log(!optout.includes("970521932845957221"));
-console.log(!optout.includes(parseInt(970521932845957221)) /* int */|| !optout.includes("970521932845957221")/* string */) && whitelist.includes("1033337146205012039")/* in ok guild */;
-console.log(!optout.includes(parseInt(970521932845957221)) /* int */|| !optout.includes("970521932845957221")/* string */) 
-console.log(( !optout.includes("970521932845957221")/* string */) && whitelist.includes("1033337146205012039")/* in ok guild */);
 
 
 

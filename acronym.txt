@@ -1,0 +1,41 @@
+@everyone
+
+an entrely "new" acronym system, devised by @morris#0832
+||ok it's not entirely new||
+
+# People
+
+a, d, f, m: self-explanatory
+t: teacher
+ht: homeroom teacher
+
+## bots
+
+yee: yee 龍
+  (may also use: y)
+tb: Tupperbox 
+tbt: Testbot
+co: counting
+coc: counting classic
+z: Junior Hizollo
+
+
+# afk
+afk: self-explanatory
+cafk: afk for class
+  (may also use: c)
+
+## mom-related
+
+mnas: mom near afk sry (severity: low)
+mmas: mom mad afk sry (severity: high)
+v: mom ***very*** mad afk sry (severity: very high)
+  (note: this is usually used when there is no time to type, and thus a "v" is suffice)
+
+
+# Conversation:
+jk: just kidding
+np: no problem
+  (may also use: no prob)
+sry: sorry
+
