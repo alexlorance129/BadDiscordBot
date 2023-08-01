@@ -16,6 +16,12 @@ let help = "`?!help` => display this message.\n`?!count` => count. provide start
 let whitelist = ["1035160611077754910", "1033337146205012039", "978555497496076288"];
 
 var optout = require('./optout.js');
+console.log(!optout.includes("970521932845957221"));
+console.log(!optout.includes(parseInt(970521932845957221)) /* int */|| !optout.includes("970521932845957221")/* string */) && whitelist.includes("1033337146205012039")/* in ok guild */;
+console.log(!optout.includes(parseInt(970521932845957221)) /* int */|| !optout.includes("970521932845957221")/* string */) 
+console.log(( !optout.includes("970521932845957221")/* string */) && whitelist.includes("1033337146205012039")/* in ok guild */);
+
+
 
 let expData = {};
 try {
@@ -67,23 +73,28 @@ client.on("message", msg => {
         }
     } else if (command === "?!count") {
 
-        var start = commands[1];
-        var end = commands[2];
+        var start = parseInt(commands[1]);
+        var end = parseInt(commands[2]);
         var string = "";
+      /*console.log(start + ',' + end)
+      console.log(start<end)*/
 
         if (start < end) {
+            //console.log(500<1000)
             for (var i = start; i <= end; i++) {
                 
                 if (string.length + i.toString.length <= 1800) {
                     string += ('' + i + '\n');
+                    //console.log(i)
                 } else {
                     msg.channel.send(string);
                     string = "" + i + "\n";
                 }
-
+            //console.log(string);
 
                 
             }
+            //console.log(string);
         }
         if (string != "") {
             msg.channel.send(string);
@@ -197,7 +208,8 @@ client.on("message", msg => {
             }
             if (i != births.length - 1){
               
-            continue;} 
+              continue;
+            } 
           } else{
             userisinlist = true;
             break;
@@ -209,18 +221,20 @@ client.on("message", msg => {
         if (useridisinlist == true){
           msg.reply("you already entered your birthday");
         } else {
-        var yearG = parseInt(commands[1]);
-        var monthG = parseInt(commands[2]);
-        var dayG = parseInt(commands[3]);
-      
-        births.push([userID, yearG, monthG, dayG]);
+          var yearG = parseInt(commands[1]);
+          var monthG = parseInt(commands[2]);
+          var dayG = parseInt(commands[3]);
 
+          
         
-
-      
-        fs.writeFileSync('./births.js', "let births = " + JSON.stringify( births ) + ";\n\nmodule.exports =  births ;");
+          births.push([userID, yearG, monthG, dayG]);
+  
+          
+  
         
-        msg.reply("Successfully added");
+          fs.writeFileSync('./births.js', "let births = " + JSON.stringify( births ) + ";\n\nmodule.exports =  births ;");
+          
+          msg.reply(`Successfully added. Your birthday is: Year: ${yearG} Month: ${monthG} Day: ${dayG}`);
         }
       
     } else if (command == "?!optout"){
@@ -293,7 +307,7 @@ client.on("message", msg => {
       
     } else if (command == "?!會考"){
         const date1 = new Date();
-        const date2 = new Date('2024-05-20');
+        const date2 = new Date('2024-05-18');
         const diffTime = Math.abs(date2 - date1);
         const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
         console.log(diffTime + " milliseconds");
@@ -350,7 +364,7 @@ client.on("message", msg => {
 
 
 
-
+  //console.log(msg.author.tag);
   if (msg.author.bot || !msg.guild || command[0] == '&') {
     return;
   }
@@ -390,7 +404,7 @@ client.on("message", msg => {
     /*console.log(!optout.includes(parseInt(user.id)) || !optout.includes(user.id));
     console.log(user.id == 931727225017999500);
     console.log(optout);*/
-    if ((!optout.includes(parseInt(user.id)) /* int */|| !optout.includes(user.id)/* string */) && whitelist.includes(msg.guild.id)/* in ok guild */){
+    if (( !optout.includes(user.id)/* string */) && whitelist.includes(msg.guild.id)/* in ok guild */){
       user.send(`Hello, ${user}!\nYou now have ${currentXP} XP in ${guildName}! You are now at Level ${level}! Opt-out of DMs by using ?!optout. `);
       console.log("ok send" + msg.author.tag + currentXP + "," + level);
     }
