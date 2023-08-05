@@ -247,7 +247,7 @@ client.on("message", msg => {
         } else {
           msg.reply("Already opted out")
         }
-    } else if (command == "?!listxp") {
+    } else if (command == "?!listxp" || command == "?!showxp") {
       
       if (!expData[msg.author.id]) {
         msg.reply("You don't have any XP data.");
@@ -274,7 +274,7 @@ client.on("message", msg => {
   
 
       
-    } else if (command == "?!safelistxp") {
+    } else if (command == "?!safelistxp" || command == "?!safeshowxp") {
       
       if (!expData[msg.author.id]) {
         msg.reply("You don't have any XP data.");
