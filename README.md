@@ -19,4 +19,5 @@ Run `?!help`.
 - `?!spam` => send spam. provide the message and number of messages. people other than the author is limited to sending 20 messages.
 - `?!optout` => Out-out of DMs. 
 - `?!listxp` => list your xp's, across servers.
+- `?!safelistxp` => list your xp in this server.
 
