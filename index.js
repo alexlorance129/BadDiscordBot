@@ -419,4 +419,3 @@ client.on("message", msg => {
 
 
 client.login(token);
-// test
