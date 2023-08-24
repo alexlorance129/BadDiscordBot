@@ -34,70 +34,131 @@ function getRndInteger(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+function listxp(msg){
+  if (!expData[msg.author.id]) {
+    msg.reply("You don't have any XP data.");
+    return;
+  }
+
+  const user = msg.author;
+  const guildXP = expData[msg.author.id];
+
+  let response = `XP and Level in each guild:\n`;
+  for (const guildId in guildXP) {
+    const guild = client.guilds.cache.get(guildId);
+    const guildName = guild.name;
+    const xp = guildXP[guildId];
+    const level = getLevel(xp);
+    
+    if (whitelist.includes(guildId) || msg.author.id == "931727225017999441"){
+      
+      response += `Guild: ${guildName}, XP: ${xp}, Level: ${level}\n`;
+    }
+  }
+  msg.reply(response);
+}
+      
+  
+
+      
+function safelistxp(msg){
+  
+  if (!expData[msg.author.id]) {
+    msg.reply("You don't have any XP data.");
+    return;
+  }
+
+  const user = msg.author;
+  const guildXP = expData[msg.author.id];
+
+  let response = `XP and Level in this guild:\n`;
+  for (const guildId in guildXP) {
+    const guild = client.guilds.cache.get(guildId);
+    const guildName = guild.name;
+    const xp = guildXP[guildId];
+    const level = getLevel(xp);
+    
+    if ([msg.guild.id].includes(guildId) && whitelist.includes(guildId)){
+      
+      response += `Guild: ${guildName}, XP: ${xp}, Level: ${level}\n`;
+    }
+  }
+
+  msg.reply(response);
+ 
+}
+
 client.on("ready", () => {
     console.log(`Logged in as ${client.user.tag}!`);
     client.channels.cache.get('970458238199955479').send("我上線拉");
     client.channels.cache.get('980670536965316630').send("我上線拉");
 });
 
-client.on("message", msg => {
-    const d = new Date();
-    var commands = msg.content.split(' ');
-    var command = commands[0];
 
-    if (command === "?!ping") {
-        msg.channel.send(`Pong! \nLatency is ${Date.now() - msg.createdTimestamp}ms, and API Latency is ${Math.round(client.ws.ping)}ms!`);
 
-    } else if (command === "?!error") {
-        if (msg.author.id == '931727225017999441') {
-            msg.reply();
-        } else {
-            msg.reply("Permissions not sufficient. Only the bot's author can use this function.")
-        }
-    } else if (command === "?!heartsutra") {
-        msg.reply(heartpoem);
 
-    } else if (command === "?!greatcompassionmantra") {
-        msg.reply(greatSadnessPoem);
 
-    } else if (command === "?!help") {
-        var ans = getRndInteger(1, 4);
-        if (ans <= 3) {
-            msg.reply(help);
-        } else {
-            msg.reply(unhelp);
-        }
-    } else if (command === "?!count") {
+client.on('message', (msg) => {
+  const d = new Date();
+  var commands = msg.content.split(' ');
+  var command = commands[0];
 
-        var start = parseInt(commands[1]);
-        var end = parseInt(commands[2]);
-        var string = "";
-      /*console.log(start + ',' + end)
-      console.log(start<end)*/
+  switch (command) {
+    case '?!ping':
+      msg.channel.send(`Pong! \nLatency is ${Date.now() - msg.createdTimestamp}ms, and API Latency is ${Math.round(client.ws.ping)}ms!`);
+      break;
 
-        if (start < end) {
-            //console.log(500<1000)
-            for (var i = start; i <= end; i++) {
-                
-                if (string.length + i.toString.length <= 1800) {
-                    string += ('' + i + '\n');
-                    //console.log(i)
-                } else {
-                    msg.channel.send(string);
-                    string = "" + i + "\n";
-                }
-            //console.log(string);
+    case '?!error':
+    if (msg.author.id == '931727225017999441') {
+          msg.reply();
+    } else {
+          msg.reply("Permissions not sufficient. Only the bot's author can use this function.")
+    }
+      
+      break;
 
-                
-            }
-            //console.log(string);
-        }
-        if (string != "") {
+    case '?!heartsutra':
+      msg.reply(heartpoem);
+      break;
+
+    case '?!greatcompassionmantra':
+      msg.reply(greatSadnessPoem);
+      break;
+
+    case '?!help':
+      var ans = getRndInteger(1, 4);
+      if (ans <= 3) {
+        msg.reply(help);
+      } else {
+        msg.reply(unhelp);
+      }
+      break;
+
+    case '?!count':
+      var start = parseInt(commands[1]);
+      var end = parseInt(commands[2]);
+      var string = '';
+
+      if (start < end) {
+        for (var i = start; i <= end; i++) {
+          if (string.length + i.toString.length <= 1800) {
+            string += '' + i + '\n';
+          } else {
             msg.channel.send(string);
-        } else {
-            msg.reply("Input not expected. Usage: `?!count (start integer) (end integer)`");
+            string = '' + i + '\n';
+          }
         }
-    } else if (command === "?!birth") {
+      }
+      if (string != '') {
+        msg.channel.send(string);
+      } else {
+        msg.reply(
+          'Input not expected. Usage: `?!count (start integer) (end integer)`'
+        );
+      }
+      break;
+
+    case '?!birth':
         let month = d.getMonth() + 1;
         let date = d.getDate();
         let year = d.getFullYear();
@@ -137,7 +198,9 @@ client.on("message", msg => {
             msg.reply("What are you doing here? Today is not anyone's birthday!!!\n\n\n(at least, that's what my database says. If your birthday is not listed, consider using `?!addbirth`. Usage: ```?!addbirth year(in AD) month(1~12) day(1~31)```Also, please do not scold the author a bit bc i already put it in ok?");
         }
 
-    } else if (command === "?!flip") {
+      break;
+
+    case '?!flip':
 
         var face = commands[1];
         var bet = commands[2];
@@ -167,30 +230,22 @@ client.on("message", msg => {
             }
         }
 
-    } else if (command == "?!spam") {
-        var usr = commands[1];
-        var times = commands[2];
-        if (times == "") {
-            times = 1;
-        }
-        if (msg.author.id == '931727225017999441' || times <= 20) {
-            for (var i = 1; i <= times; i++) {
-                msg.channel.send(usr);
-            }
+      break;
+    case '?!spam':
+      var usr = commands[1];
+      var times = commands[2];
+      if (times == "") {
+          times = 1;
+      }
+      if (msg.author.id == '931727225017999441' || times <= 20) {
+          for (var i = 1; i <= times; i++) {
+              msg.channel.send(usr);
+          }
         } else {
-            msg.reply("<@" + msg.author.id + "> Permissions not sufficient. People other than the bot author is limited to sending 20 messages.")
-        }
-    } else if (command == "?!modtest"){
-        /*
-        testABC.push("b");
-
-        console.log(testABC);
-        fs.writeFileSync('./test.js', "let test = " + JSON.stringify( testABC ) + ";\n\nmodule.exports =  test ;");
-        var testDEF = require('./test.js');
-        msg.reply("<@" + "931727225017999441" + "> ");*/
-
-      
-    } else if (command == "?!addbirth"){
+          msg.reply("<@" + msg.author.id + "> Permissions not sufficient. People other than the bot author is limited to sending 20 messages.")
+      }
+      break;
+    case '?!addbirth':
         var useridisinlist = true;
         var userID = msg.author.id;
         for (var i = 0; i < births.length; i++){
@@ -232,94 +287,47 @@ client.on("message", msg => {
           
           msg.reply(`Successfully added. Your birthday is: Year: ${yearG} Month: ${monthG} Day: ${dayG}`);
         }
-      
-    } else if (command == "?!optout"){
-        const user = msg.author;
-        if (!optout.includes(user)){
-          optout.push(user.id)
-          //console.log(test);
-          
-          let fileContent = `let test = ${JSON.stringify(optout)};\n\nmodule.exports = test;`;
-          fs.writeFileSync('./optout.js', fileContent);
-          //fs.writeFileSync('./optout.js', "let test = " + JSON.stringify( optout ) + "," + user + ";\n\nmodule.exports =  test ;");
-        
-          msg.reply("<@" + msg.author.id + "> Successfully opted out of DMs. ");
-        } else {
-          msg.reply("Already opted out")
-        }
-    } else if (command == "?!listxp" || command == "?!showxp") {
-      
-      if (!expData[msg.author.id]) {
-        msg.reply("You don't have any XP data.");
-        return;
-      }
 
+      break;
+
+    case '?!optout':
       const user = msg.author;
-      const guildXP = expData[msg.author.id];
-
-      let response = `XP and Level in each guild:\n`;
-      for (const guildId in guildXP) {
-        const guild = client.guilds.cache.get(guildId);
-        const guildName = guild.name;
-        const xp = guildXP[guildId];
-        const level = getLevel(xp);
+      if (!optout.includes(user.id)){
+        optout.push(user.id)
+        //console.log(test);
         
-        if (whitelist.includes(guildId) || msg.author.id == "931727225017999441"){
-          
-          response += `Guild: ${guildName}, XP: ${xp}, Level: ${level}\n`;
-        }
+        let fileContent = `let test = ${JSON.stringify(optout)};\n\nmodule.exports = test;`;
+        fs.writeFileSync('./optout.js', fileContent);
+        //fs.writeFileSync('./optout.js', "let test = " + JSON.stringify( optout ) + "," + user + ";\n\nmodule.exports =  test ;");
+      
+        msg.reply("<@" + msg.author.id + "> Successfully opted out of DMs. ");
+      } else {
+        msg.reply("Already opted out")
       }
+      break;
 
-      msg.reply(response);
-  
-
-      
-    } else if (command == "?!safelistxp" || command == "?!safeshowxp") {
-      
-      if (!expData[msg.author.id]) {
-        msg.reply("You don't have any XP data.");
-        return;
-      }
-
-      const user = msg.author;
-      const guildXP = expData[msg.author.id];
-
-      let response = `XP and Level in this guild:\n`;
-      for (const guildId in guildXP) {
-        const guild = client.guilds.cache.get(guildId);
-        const guildName = guild.name;
-        const xp = guildXP[guildId];
-        const level = getLevel(xp);
-        
-        if ([msg.guild.id].includes(guildId) && whitelist.includes(guildId)){
-          
-          response += `Guild: ${guildName}, XP: ${xp}, Level: ${level}\n`;
-        }
-      }
-
-      msg.reply(response);
-  
-
-      
-    } else if (command == "?!會考"){
-        const date1 = new Date();
-        const date2 = new Date('2024-05-18');
-        const diffTime = Math.abs(date2 - date1);
-        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
-        console.log(diffTime + " milliseconds");
-        console.log(diffDays + " days");
-        msg.reply("還有" + diffDays + " 天就會考了！");
-      
-    } else if (command == "?!delete"){
-      /*client.channels.fetch(1099586605578190918).then(channel => {
-        channel.messages.delete(1099627579687849985);
-      });*/
-
-
-
-      
-      //channel.messages.delete("1099627579687849985");
-    } else {
+    case '?!listxp':
+      listxp(msg);
+      break;
+    case '?!showxp':
+      listxp(msg);
+      break;
+    case '?!safelistxp':
+      safelistxp(msg);
+      break;
+    case '?!safeshowxp':
+      safelistxp(msg);
+      break;
+    case '?!會考':
+      const date1 = new Date();
+      const date2 = new Date('2024-05-18');
+      const diffTime = Math.abs(date2 - date1);
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+      console.log(diffTime + " milliseconds");
+      console.log(diffDays + " days");
+      msg.reply("還有" + diffDays + " 天就會考了！");
+      break;
+    default:
         /*
         if (command[0] != '&'){
         // all other messages go here
@@ -360,60 +368,61 @@ client.on("message", msg => {
 
 
 
-  //console.log(msg.author.tag);
-  if (msg.author.bot || !msg.guild || command[0] == '&') {
-    return;
-  }
+      //console.log(msg.author.tag);
+      if (msg.author.bot || !msg.guild || command[0] == '&') {
+        return;
+      }
+    
+      if (typeof expData[msg.author.id] != 'undefined'){
+        var oldLevel = getLevel(expData[msg.author.id][msg.guild.id] );
+      } else {
+        var oldlevel = 0;
+      }
+    
+      if (typeof oldlevel == 'undefined'){
+        oldlevel = 0;
+      }
+      // Generate a random XP value between 3 and 5
+      const xp = Math.floor(Math.random() * 3) + 3;
+    
+      console.log(expData[msg.author.id][msg.guild.id]);
+      // Add the user's ID, server's ID, and XP value to expData
+      if (!expData[msg.author.id]) {
+        expData[msg.author.id] = {};
+      }
+      if (!expData[msg.author.id][msg.guild.id]) {
+        expData[msg.author.id][msg.guild.id] = 0;
+      }
+      expData[msg.author.id][msg.guild.id] += xp;
+    
+      // Check if level changed
+      console.log(expData[msg.author.id][msg.guild.id]);
+      const newLevel = getLevel(expData[msg.author.id][msg.guild.id]);
+      if (newLevel > oldLevel) {
+        // Send a DM to the user with level change information
+        const user = msg.author;
+        const guildName = msg.guild.name;
+        const currentXP = expData[msg.author.id][msg.guild.id];
+        const level = newLevel;
+        //console.log("ok comparison");
+        /*console.log(!optout.includes(parseInt(user.id)) || !optout.includes(user.id));
+        console.log(user.id == 931727225017999500);
+        console.log(optout);*/
+        if (( !optout.includes(user.id)/* string */) && whitelist.includes(msg.guild.id)/* in ok guild */){
+          user.send(`Hello, ${user}!\nYou now have ${currentXP} XP in ${guildName}! You are now at Level ${level}! Opt-out of DMs by using ?!optout. `);
+          console.log("ok send" + msg.author.tag + currentXP + "," + level);
+        }
+      }
+    
+      // Save expData to exp.json file
+      fs.writeFile('./exp.json', JSON.stringify(expData, null, 2), (error) => {
+        if (error) {
+          console.error('Failed to save expData to exp.json file:', error);
+        }
+      });
 
-  if (typeof expData[msg.author.id] != 'undefined'){
-    var oldLevel = getLevel(expData[msg.author.id][msg.guild.id] );
-  } else {
-    var oldlevel = 0;
+      break;
   }
-
-  if (typeof oldlevel == 'undefined'){
-    oldlevel = 0;
-  }
-  // Generate a random XP value between 3 and 5
-  const xp = Math.floor(Math.random() * 3) + 3;
-
-  console.log(expData[msg.author.id][msg.guild.id]);
-  // Add the user's ID, server's ID, and XP value to expData
-  if (!expData[msg.author.id]) {
-    expData[msg.author.id] = {};
-  }
-  if (!expData[msg.author.id][msg.guild.id]) {
-    expData[msg.author.id][msg.guild.id] = 0;
-  }
-  expData[msg.author.id][msg.guild.id] += xp;
-
-  // Check if level changed
-  console.log(expData[msg.author.id][msg.guild.id]);
-  const newLevel = getLevel(expData[msg.author.id][msg.guild.id]);
-  if (newLevel > oldLevel) {
-    // Send a DM to the user with level change information
-    const user = msg.author;
-    const guildName = msg.guild.name;
-    const currentXP = expData[msg.author.id][msg.guild.id];
-    const level = newLevel;
-    //console.log("ok comparison");
-    /*console.log(!optout.includes(parseInt(user.id)) || !optout.includes(user.id));
-    console.log(user.id == 931727225017999500);
-    console.log(optout);*/
-    if (( !optout.includes(user.id)/* string */) && whitelist.includes(msg.guild.id)/* in ok guild */){
-      user.send(`Hello, ${user}!\nYou now have ${currentXP} XP in ${guildName}! You are now at Level ${level}! Opt-out of DMs by using ?!optout. `);
-      console.log("ok send" + msg.author.tag + currentXP + "," + level);
-    }
-  }
-
-  // Save expData to exp.json file
-  fs.writeFile('./exp.json', JSON.stringify(expData, null, 2), (error) => {
-    if (error) {
-      console.error('Failed to save expData to exp.json file:', error);
-    }
-  });
-
-    }
 });
 
 
